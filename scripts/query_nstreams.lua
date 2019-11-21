@@ -21,7 +21,6 @@ local threadcounter = 1
 local threads = {}
 
 -- Path to streams
-local _streams_path = "/foobar/"
 local _streams_name = "stream_%d"
 local _segments_name= "segment_%d.m4s"
 
@@ -44,19 +43,18 @@ end
 
 function init(args)
   --print ("INIT: 0-> " .. args[0] .. ", 1 -> " .. args[1] .. ", 2 -> " .. args[2] .. ", 3 -> " .. args[3])
-  _streams_path = args[1]
-  _streams_name = args[2]
-  _segments_name = args[3]
+  _streams_name = args[1]
+  _segments_name = args[2]
 
   -- Number of different target streams
-  local num_target_streams = tonumber(args[4])
+  local num_target_streams = tonumber(args[3])
   -- Number of threads
-  local num_threads = tonumber(args[5])
+  local num_threads = tonumber(args[4])
   -- Number of connections among all tread aka. clients
-  local num_cns = tonumber(args[6])
+  local num_cns = tonumber(args[5])
   _num_cns_thr = num_cns/num_threads
 
-  _delay = tonumber(args[7])
+  _delay = tonumber(args[6])
 
   -- Each thread initializes its streams id and segment tables
   for cid=1,_num_cns_thr,1 do
@@ -101,7 +99,7 @@ request = function()
   -- Request the following segment the next time around
   _stream_sgmt_ids[gb_cn_idx] = _stream_sgmt_ids[gb_cn_idx]+1
 
-  path = "/".._streams_path.."/"..stream.."/"..segment
+  path = "/"..stream.."/"..segment
   path = path.."?thread="..id.."&th_cn_idx="..th_cn_idx.."&bg_cn_idx="..gb_cn_idx
   print (os.time() .." - Requesting " .. path)
   return wrk.format("GET", path)
