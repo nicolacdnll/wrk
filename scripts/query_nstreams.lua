@@ -101,6 +101,6 @@ request = function()
 
   path = "/"..stream.."/"..segment
   path = path.."?thread="..id.."&th_cn_idx="..th_cn_idx.."&bg_cn_idx="..gb_cn_idx
-  print (os.time() .." - Requesting " .. path)
+  -- print (os.time() .." - Requesting " .. path)
   return wrk.format("GET", path)
 end
